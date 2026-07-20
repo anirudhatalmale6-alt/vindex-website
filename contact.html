@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vindex — Contact</title>
+<meta name="description" content="Get in touch with Vindex — request access or ask about the platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('vindex-theme')||'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span>VINDEX</a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-en="Home" data-da="Forside">Home</a></li>
+      <li><a href="cases.html" data-en="Cases" data-da="Cases">Cases</a></li>
+      <li><a href="about.html" data-en="About" data-da="Om os">About</a></li>
+      <li><a href="platform.html" data-en="Platform" data-da="Platform">Platform</a></li>
+      <li><a href="contact.html" class="active" data-en="Contact" data-da="Kontakt">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="toggle" id="lang"><button data-lang="en" class="on">EN</button><button data-lang="da">DA</button></div>
+      <button class="icon-btn" id="theme" aria-label="Toggle theme"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="theme-ic"></svg></button>
+      <a class="btn btn-primary" href="#" data-en="Member Login" data-da="Log ind">Member Login</a>
+      <button class="hamburger" id="burger" aria-label="Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html" data-en="Home" data-da="Forside">Home</a>
+    <a href="cases.html" data-en="Cases" data-da="Cases">Cases</a>
+    <a href="about.html" data-en="About" data-da="Om os">About</a>
+    <a href="platform.html" data-en="Platform" data-da="Platform">Platform</a>
+    <a href="contact.html" data-en="Contact" data-da="Kontakt">Contact</a>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="wrap reveal">
+    <div class="breadcrumb"><a href="index.html" data-en="Home" data-da="Forside">Home</a> / <span data-en="Contact" data-da="Kontakt">Contact</span></div>
+    <span class="eyebrow" data-en="Contact" data-da="Kontakt">Contact</span>
+    <div class="accent-rule"></div>
+    <h1 data-en="Let's talk about your operation." data-da="Lad os tale om jeres drift.">Let's talk about your operation.</h1>
+    <p data-en="Request access, ask a question, or tell us about your 17 modules. We usually reply within one business day." data-da="Anmod om adgang, stil et spørgsmål, eller fortæl os om jeres 17 moduler. Vi svarer normalt inden for én arbejdsdag.">Request access, ask a question, or tell us about your 17 modules. We usually reply within one business day.</p>
+  </div>
+</section>
+
+<section class="blk" style="padding-top:40px">
+  <div class="wrap contact-grid">
+    <form class="form reveal" id="contact-form" novalidate>
+      <div class="form-ok" id="form-ok" data-en="Thanks — your message has been received. We'll be in touch shortly." data-da="Tak — din besked er modtaget. Vi vender tilbage hurtigst muligt.">Thanks — your message has been received. We'll be in touch shortly.</div>
+      <div class="grid-2" style="gap:18px">
+        <div class="field"><label data-en="Name" data-da="Navn">Name</label><input type="text" name="name" required data-en-ph="Your name" data-da-ph="Dit navn" placeholder="Your name"></div>
+        <div class="field"><label data-en="Company" data-da="Virksomhed">Company</label><input type="text" name="company" data-en-ph="Company name" data-da-ph="Virksomhedsnavn" placeholder="Company name"></div>
+      </div>
+      <div class="field"><label data-en="Email" data-da="E-mail">Email</label><input type="email" name="email" required data-en-ph="you@company.com" data-da-ph="dig@virksomhed.dk" placeholder="you@company.com"></div>
+      <div class="field"><label data-en="I'm interested in" data-da="Jeg er interesseret i">I'm interested in</label>
+        <select name="topic">
+          <option data-en="Requesting platform access" data-da="At anmode om platformadgang">Requesting platform access</option>
+          <option data-en="A demo with our content" data-da="En demo med vores indhold">A demo with our content</option>
+          <option data-en="Pricing &amp; milestones" data-da="Priser &amp; milepæle">Pricing &amp; milestones</option>
+          <option data-en="Something else" data-da="Noget andet">Something else</option>
+        </select>
+      </div>
+      <div class="field"><label data-en="Message" data-da="Besked">Message</label><textarea name="message" required data-en-ph="Tell us a little about what you need…" data-da-ph="Fortæl os lidt om, hvad I har brug for…" placeholder="Tell us a little about what you need…"></textarea></div>
+      <button type="submit" class="btn btn-primary" style="justify-content:center" data-en="Send message" data-da="Send besked">Send message</button>
+      <p class="note" data-en="By sending this you agree we may contact you about your enquiry. Nothing is shared with third parties." data-da="Ved at sende dette accepterer du, at vi må kontakte dig om din henvendelse. Intet deles med tredjeparter.">By sending this you agree we may contact you about your enquiry. Nothing is shared with third parties.</p>
+    </form>
+
+    <aside class="contact-aside reveal">
+      <div class="info">
+        <h3 data-en="What happens next" data-da="Hvad sker der nu">What happens next</h3>
+        <p data-en="We read every message personally, reply within one business day, and — if it's a fit — set up a short call or a live demo built around your own modules." data-da="Vi læser hver besked personligt, svarer inden for én arbejdsdag og opsætter — hvis det passer — et kort opkald eller en live demo bygget omkring jeres egne moduler.">We read every message personally, reply within one business day, and — if it's a fit — set up a short call or a live demo built around your own modules.</p>
+      </div>
+      <div class="info">
+        <h3 data-en="Bilingual by design" data-da="Tosproget fra bunden">Bilingual by design</h3>
+        <p data-en="Prefer Danish? Switch the language toggle at the top — the whole site, and your future platform, speaks both EN and DA." data-da="Foretrækker du dansk? Skift sprogknappen øverst — hele sitet, og jeres kommende platform, taler både EN og DA.">Prefer Danish? Switch the language toggle at the top — the whole site, and your future platform, speaks both EN and DA.</p>
+      </div>
+      <div class="info">
+        <h3 data-en="Secure from day one" data-da="Sikkert fra dag ét">Secure from day one</h3>
+        <p data-en="HTTPS, hashed passwords and server-side access control across both vindex.dk and vindex.com." data-da="HTTPS, hashede adgangskoder og serverside adgangskontrol på både vindex.dk og vindex.com.">HTTPS, hashed passwords and server-side access control across both vindex.dk and vindex.com.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand"><a class="brand" href="index.html"><span class="dot"></span>VINDEX</a>
+        <p data-en="A living, secure knowledge base for AI-ready operations — public website and members area, bilingual by design." data-da="En levende, sikker vidensbase til AI-parat drift — offentlig hjemmeside og medlemsområde, tosproget fra bunden.">A living, secure knowledge base for AI-ready operations — public website and members area, bilingual by design.</p></div>
+      <div class="foot-col"><h4 data-en="Site" data-da="Side">Site</h4>
+        <a href="index.html" data-en="Home" data-da="Forside">Home</a><a href="cases.html" data-en="Cases" data-da="Cases">Cases</a><a href="about.html" data-en="About" data-da="Om os">About</a><a href="platform.html" data-en="Platform" data-da="Platform">Platform</a></div>
+      <div class="foot-col"><h4 data-en="Platform" data-da="Platform">Platform</h4>
+        <a href="#" data-en="Member login" data-da="Log ind">Member login</a><a href="platform.html" data-en="Leadership access" data-da="Ledelsesadgang">Leadership access</a><a href="platform.html" data-en="Employee access" data-da="Medarbejderadgang">Employee access</a><a href="contact.html" data-en="Contact" data-da="Kontakt">Contact</a></div>
+    </div>
+    <div class="foot-bot">
+      <span class="domains" data-en="© 2026 Vindex. Live on <b>vindex.dk</b> and <b>vindex.com</b>." data-da="© 2026 Vindex. Live på <b>vindex.dk</b> og <b>vindex.com</b>.">© 2026 Vindex. Live on <b>vindex.dk</b> and <b>vindex.com</b>.</span>
+      <span data-en="HTTPS · Encrypted · GDPR-ready" data-da="HTTPS · Krypteret · GDPR-klar">HTTPS · Encrypted · GDPR-ready</span>
+    </div>
+  </div>
+</footer>
+<script src="assets/main.js"></script>
+</body>
+</html>
