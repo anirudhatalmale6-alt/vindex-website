@@ -214,3 +214,10 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--sur
   .brand{letter-spacing:.14em}
   .proof .wrap{padding:22px}
 }
+
+/* Cookie consent banner */
+.cookie-consent{position:fixed;left:16px;right:16px;bottom:16px;z-index:200;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.cookie-consent .cc-inner{display:flex;align-items:center;gap:18px;padding:16px 20px;max-width:var(--maxw);margin:0 auto;flex-wrap:wrap}
+.cookie-consent .cc-text{margin:0;flex:1;min-width:240px;color:var(--muted);font-size:14px;line-height:1.5}
+.cookie-consent .cc-actions{display:flex;gap:10px;flex-shrink:0}
+@media(max-width:560px){.cookie-consent .cc-actions{width:100%}.cookie-consent .cc-actions .btn{flex:1}}
