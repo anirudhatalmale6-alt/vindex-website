@@ -78,7 +78,7 @@
     document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
   }
 
-  /* CONTACT FORM — posts to contact.php and only says "received" when the
+  /* CONTACT FORM — posts to contact-send.php and only says "received" when the
      server confirms the email actually went. Any failure says so plainly and
      leaves what the visitor typed in place, so nothing is lost. */
   var form=document.getElementById('contact-form');
@@ -110,7 +110,7 @@
       });
       if(bad){ showErr('invalid'); return; }
       if(btn) btn.disabled=true;
-      fetch(form.getAttribute('action')||'contact.php',{method:'POST',body:new FormData(form)})
+      fetch(form.getAttribute('action')||'contact-send.php',{method:'POST',body:new FormData(form)})
         .then(function(r){ return r.json().catch(function(){ return {ok:false,code:'failed'}; }); })
         .then(function(res){
           if(res&&res.ok){ if(ok) ok.classList.add('show'); form.reset(); }
