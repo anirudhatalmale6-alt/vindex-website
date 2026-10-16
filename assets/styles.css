@@ -175,6 +175,10 @@ html[data-theme="light"] .case .media{background:linear-gradient(135deg,#0c2531,
 .form .note{font-size:12.5px;color:var(--muted)}
 .form-ok{display:none;padding:14px 16px;border-radius:11px;background:var(--accent-soft);border:1px solid var(--accent-line);color:var(--accent);font-weight:600;font-size:14px}
 .form-ok.show{display:block}
+.form-err{display:none;padding:14px 16px;border-radius:11px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.4);color:#f87171;font-weight:600;font-size:14px;line-height:1.5}
+.form-err.show{display:block}
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+.field.bad input,.field.bad textarea{border-color:rgba(239,68,68,.6)}
 .contact-aside .info{border:1px solid var(--line);border-radius:var(--radius);padding:26px;background:var(--surface);margin-bottom:18px}
 .contact-aside h3{font-size:17px;margin-bottom:10px}
 .contact-aside p{font-size:14.5px;color:var(--muted)}

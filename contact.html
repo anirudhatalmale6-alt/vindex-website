@@ -26,7 +26,7 @@
     <div class="nav-right">
       <div class="toggle" id="lang"><button data-lang="en" class="on">EN</button><button data-lang="da">DA</button></div>
       <button class="icon-btn" id="theme" aria-label="Toggle theme"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="theme-ic"></svg></button>
-      <a class="btn btn-primary" href="#" data-en="Member Login" data-da="Log ind">Member Login</a>
+      <a class="btn btn-primary" href="members/login.php" data-en="Member Login" data-da="Log ind">Member Login</a>
       <button class="hamburger" id="burger" aria-label="Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     </div>
   </nav>
@@ -51,8 +51,11 @@
 
 <section class="blk" style="padding-top:40px">
   <div class="wrap contact-grid">
-    <form class="form reveal" id="contact-form" novalidate>
-      <div class="form-ok" id="form-ok" data-en="Thanks — your message has been received. We'll be in touch shortly." data-da="Tak — din besked er modtaget. Vi vender tilbage hurtigst muligt.">Thanks — your message has been received. We'll be in touch shortly.</div>
+    <form class="form reveal" id="contact-form" action="contact.php" method="post" novalidate>
+      <div class="form-ok" id="form-ok" role="status" data-en="Thanks — your message has been received. We'll be in touch shortly." data-da="Tak — din besked er modtaget. Vi vender tilbage hurtigst muligt.">Thanks — your message has been received. We'll be in touch shortly.</div>
+      <div class="form-err" id="form-err" role="alert"></div>
+      <!-- Spam trap: hidden from people, filled in by bots. Leave it empty. -->
+      <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
       <div class="grid-2" style="gap:18px">
         <div class="field"><label data-en="Name" data-da="Navn">Name</label><input type="text" name="name" required data-en-ph="Your name" data-da-ph="Dit navn" placeholder="Your name"></div>
         <div class="field"><label data-en="Company" data-da="Virksomhed">Company</label><input type="text" name="company" data-en-ph="Company name" data-da-ph="Virksomhedsnavn" placeholder="Company name"></div>
@@ -96,7 +99,7 @@
       <div class="foot-col"><h4 data-en="Site" data-da="Side">Site</h4>
         <a href="index.html" data-en="Home" data-da="Forside">Home</a><a href="cases.html" data-en="Cases" data-da="Cases">Cases</a><a href="about.html" data-en="About" data-da="Om os">About</a><a href="platform.html" data-en="Platform" data-da="Platform">Platform</a></div>
       <div class="foot-col"><h4 data-en="Platform" data-da="Platform">Platform</h4>
-        <a href="#" data-en="Member login" data-da="Log ind">Member login</a><a href="platform.html" data-en="Leadership access" data-da="Ledelsesadgang">Leadership access</a><a href="platform.html" data-en="Employee access" data-da="Medarbejderadgang">Employee access</a><a href="contact.html" data-en="Contact" data-da="Kontakt">Contact</a></div>
+        <a href="members/login.php" data-en="Member login" data-da="Log ind">Member login</a><a href="platform.html" data-en="Leadership access" data-da="Ledelsesadgang">Leadership access</a><a href="platform.html" data-en="Employee access" data-da="Medarbejderadgang">Employee access</a><a href="contact.html" data-en="Contact" data-da="Kontakt">Contact</a></div>
     </div>
     <div class="foot-bot">
       <span class="domains" data-en="© 2026 Vindex. Live on <b>vindex.dk</b> and <b>vindex.com</b>." data-da="© 2026 Vindex. Live på <b>vindex.dk</b> og <b>vindex.com</b>.">© 2026 Vindex. Live on <b>vindex.dk</b> and <b>vindex.com</b>.</span>

@@ -78,14 +78,48 @@
     document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
   }
 
-  /* CONTACT FORM (client-side demo; backend wired later) */
+  /* CONTACT FORM — posts to contact.php and only says "received" when the
+     server confirms the email actually went. Any failure says so plainly and
+     leaves what the visitor typed in place, so nothing is lost. */
   var form=document.getElementById('contact-form');
-  if(form) form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var ok=document.getElementById('form-ok');
-    if(ok) ok.classList.add('show');
-    form.reset();
-  });
+  if(form){
+    var MSG={
+      invalid:{en:'Please fill in your name, a valid email address and a message.',
+               da:'Udfyld venligst dit navn, en gyldig e-mailadresse og en besked.'},
+      not_configured:{en:'Sorry — the contact form isn’t switched on yet. Please try again a little later.',
+               da:'Beklager — kontaktformularen er ikke slået til endnu. Prøv igen lidt senere.'},
+      failed:{en:'Sorry — your message could not be sent just now. Please try again in a moment.',
+               da:'Beklager — din besked kunne ikke sendes lige nu. Prøv igen om et øjeblik.'}
+    };
+    var cur=function(){ return (document.documentElement.getAttribute('lang')==='da')?'da':'en'; };
+    var ok=document.getElementById('form-ok'), err=document.getElementById('form-err');
+    var btn=form.querySelector('button[type=submit]');
+    var showErr=function(key){
+      if(!err) return; var m=MSG[key]||MSG.failed;
+      err.setAttribute('data-en',m.en); err.setAttribute('data-da',m.da);
+      err.textContent=m[cur()]; err.classList.add('show');
+    };
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      if(ok) ok.classList.remove('show'); if(err) err.classList.remove('show');
+      var bad=false;
+      ['name','email','message'].forEach(function(n){
+        var el=form.elements[n], f=el&&el.closest('.field'), v=(el&&el.value||'').trim();
+        var wrong=!v||(n==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+        if(f) f.classList.toggle('bad',wrong); if(wrong) bad=true;
+      });
+      if(bad){ showErr('invalid'); return; }
+      if(btn) btn.disabled=true;
+      fetch(form.getAttribute('action')||'contact.php',{method:'POST',body:new FormData(form)})
+        .then(function(r){ return r.json().catch(function(){ return {ok:false,code:'failed'}; }); })
+        .then(function(res){
+          if(res&&res.ok){ if(ok) ok.classList.add('show'); form.reset(); }
+          else showErr(res&&res.code==='invalid'?'invalid':(res&&res.code==='not_configured'?'not_configured':'failed'));
+        })
+        .catch(function(){ showErr('failed'); })
+        .then(function(){ if(btn) btn.disabled=false; });
+    });
+  }
 
   /* COOKIE CONSENT + ANALYTICS (scripts load ONLY after Accept) */
   (function(){
