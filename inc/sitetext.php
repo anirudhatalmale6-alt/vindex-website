@@ -78,6 +78,9 @@ function st_overrides(?string $page = null): array {
 
 /** Called at the top of each page: preloads that page's saved edits. */
 function st_page(string $page): void {
+    // Plain-http visitors go to https first (same check the members area uses).
+    $h = __DIR__ . '/../members/lib/helpers.php';
+    if (is_file($h)) { require_once $h; force_https(); }
     $GLOBALS['__st_page'] = $page;
     st_overrides($page);
 }
