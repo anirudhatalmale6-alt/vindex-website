@@ -80,7 +80,10 @@ function st_overrides(?string $page = null): array {
 function st_page(string $page): void {
     // Plain-http visitors go to https first (same check the members area uses).
     $h = __DIR__ . '/../members/lib/helpers.php';
-    if (is_file($h)) { require_once $h; force_https(); }
+    // function_exists: right after an update, PHP's opcode cache can briefly
+    // serve an older helpers.php that predates force_https(). Skipping the
+    // redirect for a few seconds beats a fatal error on the homepage.
+    if (is_file($h)) { require_once $h; if (function_exists('force_https')) force_https(); }
     $GLOBALS['__st_page'] = $page;
     st_overrides($page);
 }

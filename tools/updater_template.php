@@ -113,8 +113,13 @@ if ($stop === '' && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             if (@file_put_contents($tmp, $f['data']) === false || !@rename($tmp, $target)) {
                 @unlink($tmp); $done['failed'][] = $path; continue;
             }
+            // Drop PHP's cached compiled copy so old and new files are never
+            // mixed: a new page calling a function its cached old helper lacks
+            // is a fatal error until the cache next re-checks the file.
+            if (function_exists('opcache_invalidate') && str_ends_with($path, '.php')) @opcache_invalidate($target, true);
             $done['written']++;
         }
+        if (function_exists('opcache_reset')) @opcache_reset();
         // Only tidy up once every file is safely in place.
         if (!$done['failed']) {
             foreach ($cleanup as $c) {
