@@ -66,8 +66,27 @@ def slug(text, n=6):
     return "-".join(words[:n]) or "text"
 
 
-def label_for(tag, cls):
-    c = cls or ""
+def label_for(tag, cls, parent="", ctx=()):
+    c, par = cls or "", parent or ""
+    tags = [t for t, _ in ctx]
+    # Where the text sits, said the way the client sees it on the page.
+    if "form-ok" in c: return "Message shown after the contact form is sent"
+    if "domains" in c: return "Footer copyright line"
+    if "lbl" in c: return "Small label above the logo row"
+    if "tag" in c.split() and "media" in par: return "Small tag on a case card"
+    if "meta" in c.split(): return "Small detail line on a case card"
+    if "lock" in c.split(): return "Access label in the fold-out demo (All / Leadership)"
+    if "l" in c.split() and "n" in par.split(): return "Label under a big number"
+    if "sub" in c.split(): return "Detail line inside the fold-out demo"
+    if "inner" in c.split() or "inner" in par.split(): return "Text inside the fold-out demo"
+    if "acc-head" in par.split() or "idx" in par.split(): return "Fold-out title in the demo"
+    if "pill" in par.split() or "live" in par.split(): return "Small badge above the headline"
+    if c.split() == ["l"]: return "Label under a big number"
+    if tag == "b" and "li" in tags[-2:]: return "Bold start of a point in a list"
+    if tag == "span" and not c and "li" in tags[-2:]: return "Rest of a point in a list (after the bold part)"
+    if tag == "span" and not c and "footer" in tags: return "Small line in the footer"
+    if "breadcrumb" in par.split(): return "Breadcrumb (small 'Home / page' line at the top)"
+    if "tier" in par.split(): return "Access tier description"
     if tag == "h1": return "Main headline"
     if tag == "h2": return "Section heading"
     if tag in ("h3", "h4"): return "Card / sub heading"
@@ -79,7 +98,7 @@ def label_for(tag, cls):
     if tag == "option": return "Dropdown choice"
     if tag == "p": return "Paragraph"
     if tag == "b": return "Bold text"
-    return "Text"
+    return "Small text line"
 
 
 def php_str(s):
@@ -91,7 +110,7 @@ def convert(page, defaults, shared_seen):
     toks = list(TAG.finditer(src))
     edits = []                 # (start, end, replacement)
     used = set(k for k in defaults if k.startswith(page + "."))
-    ctx = []                   # stack of open tag names, for header/footer/nav context
+    ctx = []                   # stack of (tag, class) of open elements: header/footer/nav context + parent
     group = PAGE_NAMES[page]
     order = 0
     skip_until = None
@@ -117,12 +136,14 @@ def convert(page, defaults, shared_seen):
         if not closing and name in ("script", "style"):
             skip_until = name; i += 1; continue
         if closing:
-            if ctx and ctx[-1] == name: ctx.pop()
-            elif name in ctx:
-                while ctx and ctx.pop() != name: pass
+            names = [c[0] for c in ctx]
+            if ctx and ctx[-1][0] == name: ctx.pop()
+            elif name in names:
+                while ctx and ctx.pop()[0] != name: pass
             i += 1; continue
         a = attrs_of(rawattrs)
-        in_shared = any(c in SHARED_CONTEXT for c in ctx)
+        in_shared = any(c[0] in SHARED_CONTEXT for c in ctx)
+        parent_cls = ctx[-1][1] if ctx else ""
 
         # placeholders on inputs / textareas
         if "data-en-ph" in a:
@@ -165,13 +186,13 @@ def convert(page, defaults, shared_seen):
                 else:
                     k = new_key("shared", en)
                     shared_seen[sig] = k
-                    defaults[k] = dict(page="shared", group="Menu & footer", label=label_for(name, a.get("class")),
+                    defaults[k] = dict(page="shared", group="Menu & footer", label=label_for(name, a.get("class"), parent_cls, tuple(ctx)),
                                        kind="text", en=en, da=da, order=len(shared_seen))
             else:
                 k = new_key(page, en)
                 if name in ("h1", "h2"):
                     group = re.sub(r"\*\*|==|\[([^\]]*)\]\([^)]*\)", r"\1", en)[:70]
-                defaults[k] = dict(page=page, group=group, label=label_for(name, a.get("class")),
+                defaults[k] = dict(page=page, group=group, label=label_for(name, a.get("class"), parent_cls, tuple(ctx)),
                                    kind="text", en=en, da=da, order=order)
             open_src = t.group(0)
             open_new = re.sub(r'''\sdata-en=(".*?"|'.*?')''', f' data-en="<?= st_attr({php_str(k)}, \'en\') ?>"', open_src, count=1, flags=re.S)
@@ -183,7 +204,7 @@ def convert(page, defaults, shared_seen):
             continue
 
         if not selfclose and name not in VOID:
-            ctx.append(name)
+            ctx.append((name, a.get("class") or ""))
         i += 1
 
     out, pos = [], 0
