@@ -3,7 +3,8 @@
  * Contact form handler for the public site.
  *
  * Sends the form from contact.php to the address set in the members admin
- * (Website text → Contact form), or failing that the one given at install.
+ * (Website text → Contact form), or failing that the one given at install,
+ * through the sending mailbox configured there (see inc/contact.php).
  * Answers in JSON so the page can say honestly whether the message went — it
  * never shows "received" for a message that was not sent.
  */
@@ -44,5 +45,5 @@ if ($f['name'] === '' || $f['message'] === '' || !filter_var($f['email'], FILTER
     reply(false, 'invalid', 422);
 }
 
-$sent = vdx_send_enquiry($to, $f);
-reply($sent, $sent ? 'ok' : 'send_failed', $sent ? 200 : 502);
+$r = vdx_send_enquiry($to, $f);
+reply($r['ok'], $r['ok'] ? 'ok' : 'send_failed', $r['ok'] ? 200 : 502);
