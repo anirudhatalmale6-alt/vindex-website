@@ -120,6 +120,45 @@ function vdx_mailbox_save(PDO $pdo, string $user, ?string $pass): string {
     return '';
 }
 
+/* ---------------------------------------------------------------- log */
+
+const CONTACT_LOG_SQL = "CREATE TABLE IF NOT EXISTS contact_log (
+    id      INT AUTO_INCREMENT PRIMARY KEY,
+    at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    source  VARCHAR(10)  NOT NULL,
+    ok      TINYINT(1)   NOT NULL,
+    via     VARCHAR(10)  NOT NULL,
+    error   VARCHAR(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+
+/**
+ * Record that a send happened and how it went — never what was in it. This
+ * is what lets the owner see a failure on the PUBLIC form, which otherwise
+ * only the visitor sees.
+ */
+function vdx_log_send(?PDO $pdo, string $source, array $r): void {
+    $pdo = $pdo ?? st_db();
+    if (!$pdo) return;
+    try {
+        $pdo->exec(CONTACT_LOG_SQL);
+        $pdo->prepare('INSERT INTO contact_log (source, ok, via, error) VALUES (?,?,?,?)')
+            ->execute([$source, $r['ok'] ? 1 : 0, (string)$r['via'], mb_substr((string)$r['error'], 0, 250)]);
+        $pdo->exec('DELETE FROM contact_log WHERE id <= (SELECT m FROM (SELECT MAX(id) - 200 AS m FROM contact_log) t)');
+    } catch (Throwable $e) {
+        error_log('[vindex contact] could not write the send log: ' . $e->getMessage());
+    }
+}
+
+function vdx_recent_sends(PDO $pdo, int $n = 8): array {
+    try {
+        $q = $pdo->prepare('SELECT at, source, ok, via, error FROM contact_log ORDER BY id DESC LIMIT ' . (int)$n);
+        $q->execute();
+        return $q->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Throwable $e) {
+        return [];
+    }
+}
+
 /* --------------------------------------------------------------- send */
 
 /**
@@ -156,10 +195,11 @@ function vdx_send_enquiry(string $to, array $f, bool $isTest = false, ?PDO $pdo 
     $replyTo = filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : '';
 
     $box = vdx_mailbox($pdo);
-    if ($box['user'] !== '' && $box['has_pass']) {
-        return vdx_send_smtp($box['user'], $box['pass'], $to, $replyTo, $subject, $body);
-    }
-    return vdx_send_phpmail($box['user'] ?: 'noreply@' . $host, $to, $replyTo, $subject, $body);
+    $r = ($box['user'] !== '' && $box['has_pass'])
+        ? vdx_send_smtp($box['user'], $box['pass'], $to, $replyTo, $subject, $body)
+        : vdx_send_phpmail($box['user'] ?: 'noreply@' . $host, $to, $replyTo, $subject, $body);
+    vdx_log_send($pdo, $isTest ? 'test' : 'form', $r);
+    return $r;
 }
 
 function vdx_send_smtp(string $user, string $pass, string $to, string $replyTo, string $subject, string $body): array {

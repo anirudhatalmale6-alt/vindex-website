@@ -14,7 +14,7 @@ st_page('cases');
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="<?= st_asset('assets/styles.css') ?>">
 <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('vindex-theme')||'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
 </head>
 <body>
@@ -92,6 +92,6 @@ st_page('cases');
     </div>
   </div>
 </footer>
-<script src="assets/main.js"></script>
+<script src="<?= st_asset('assets/main.js') ?>"></script>
 </body>
 </html>

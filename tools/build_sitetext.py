@@ -230,6 +230,9 @@ def convert(page, defaults, shared_seen):
     # internal links now point at the PHP pages
     body = re.sub(r'href="(index|cases|about|platform|contact)\.html(#[^"]*)?"', r'href="\1.php\2"', body)
     body = body.replace('action="contact.php"', 'action="contact-send.php"')
+    # versioned asset links (inc/sitetext.php st_asset) — no stale cached CSS/JS after an update
+    body = body.replace('href="assets/styles.css"', 'href="<?= st_asset(\'assets/styles.css\') ?>"')
+    body = body.replace('src="assets/main.js"', 'src="<?= st_asset(\'assets/main.js\') ?>"')
 
     head = ("<?php\n// Generated from " + page + ".html by tools/build_sitetext.py.\n"
             "// Wording comes from inc/sitetext-defaults.php plus any edits made in\n"

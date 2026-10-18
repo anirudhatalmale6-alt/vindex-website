@@ -122,6 +122,12 @@ function st_render(string $s): string {
     return $h;
 }
 
+/** assets/x.css?v=<mtime>: a changed file gets a new address, so no stale cached copy. */
+function st_asset(string $rel): string {
+    $f = __DIR__ . '/../' . $rel;
+    return htmlspecialchars($rel . '?v=' . (is_file($f) ? filemtime($f) : '0'), ENT_QUOTES, 'UTF-8');
+}
+
 function st_html(string $key, string $lang = 'en'): string  { return st_render(st_value($key, $lang)); }
 function st_attr(string $key, string $lang = 'en'): string  { return htmlspecialchars(st_html($key, $lang), ENT_QUOTES, 'UTF-8'); }
 function st_plain(string $key, string $lang = 'en'): string { return htmlspecialchars(st_value($key, $lang), ENT_QUOTES, 'UTF-8'); }
