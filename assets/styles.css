@@ -225,3 +225,16 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--sur
 .cookie-consent .cc-text{margin:0;flex:1;min-width:240px;color:var(--muted);font-size:14px;line-height:1.5}
 .cookie-consent .cc-actions{display:flex;gap:10px;flex-shrink:0}
 @media(max-width:560px){.cookie-consent .cc-actions{width:100%}.cookie-consent .cc-actions .btn{flex:1}}
+
+/* Phones: the header row has no room for the Member Login button, which
+   pushed the menu button off-screen. Login moves into the menu instead. */
+.mobile-menu a.mm-login{display:none}
+@media(max-width:560px){
+  .nav-right{gap:8px}
+  .nav-right > .btn-primary{display:none}
+  .mobile-menu a.mm-login{display:block;color:var(--accent);font-weight:600;border-bottom:0}
+}
+@media(max-width:374px){
+  .brand{font-size:17px;letter-spacing:.1em;gap:8px}
+  .toggle button{padding:6px 9px}
+}
