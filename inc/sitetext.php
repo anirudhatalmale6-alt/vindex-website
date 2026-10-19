@@ -94,11 +94,26 @@ function st_value(string $key, string $lang = 'en'): string {
         error_log("[vindex sitetext] unknown text key: $key");
         return '';
     }
-    if ($d[$key]['kind'] === 'seo') $lang = 'en';      // titles and descriptions are single-language
+    if (st_single_language($d[$key]['kind'])) $lang = 'en';   // titles, descriptions and settings have one value
     $lang = $lang === 'da' ? 'da' : 'en';
     $o = st_overrides($GLOBALS['__st_page'] ?? null)[$key] ?? null;
     if ($o !== null && $o[$lang] !== '') return $o[$lang];
     return $d[$key][$lang] !== '' ? $d[$key][$lang] : $d[$key]['en'];
+}
+
+/** Page titles, Google descriptions and settings have one value, not EN + DA. */
+function st_single_language(string $kind): bool { return $kind === 'seo' || $kind === 'setting'; }
+
+/**
+ * A whole-number setting, kept inside [$min, $max]. Anything that is not a
+ * plain number falls back to the original value instead of breaking the page.
+ */
+function st_number(string $key, int $min, int $max): int {
+    $d = st_defaults()[$key] ?? null;
+    $def = $d ? (int)$d['en'] : $min;
+    $v = trim(st_value($key));
+    $n = preg_match('/^\d{1,3}$/', $v) ? (int)$v : $def;
+    return max($min, min($max, $n));
 }
 
 /** Is a link target safe to put in href? No javascript:, data:, etc. */
@@ -145,9 +160,13 @@ function st_save(PDO $pdo, string $key, string $en, string $da, ?int $userId): s
     if (!isset($d[$key])) return 'unknown';
     $clean = fn($s) => mb_substr(str_replace("\0", '', preg_replace('/\r\n?/', "\n", trim($s))), 0, 4000);
     $en = $clean($en); $da = $clean($da);
-    if ($d[$key]['kind'] === 'seo') $da = '';
+    $single = st_single_language($d[$key]['kind']);
+    if ($single) $da = '';
+    if ($d[$key]['kind'] === 'setting') {                 // numbers only; anything else means "original"
+        $en = preg_match('/^\d{1,3}$/', $en) ? (string)max(0, min((int)($d[$key]['max'] ?? 100), (int)$en)) : '';
+    }
     if ($en === '') $en = $d[$key]['en'];                 // an emptied box means "back to original"
-    if ($d[$key]['kind'] !== 'seo' && $da === '') $da = $d[$key]['da'];
+    if (!$single && $da === '') $da = $d[$key]['da'];
     if ($en === $d[$key]['en'] && $da === $d[$key]['da']) {
         $pdo->prepare('DELETE FROM site_text WHERE skey = ?')->execute([$key]);
         return 'original';

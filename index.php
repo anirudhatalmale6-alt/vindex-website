@@ -46,8 +46,23 @@ st_page('index');
   </div>
 </header>
 
-<section class="hero">
+<?php
+// Video behind the headline. Swap it by replacing assets/video/hero.mp4 (and,
+// to match, hero-end.jpg: its last frame, shown while it loads and to anyone
+// who has "reduce motion" on). If the video is missing, the hero is the plain
+// design it was before.
+$heroVideo = is_file(__DIR__ . '/assets/video/hero.mp4');
+$heroDark  = st_number('index._video_dark', 0, 90) / 100;
+?>
+<section class="hero<?= $heroVideo ? ' vhero' : '' ?>">
+<?php if ($heroVideo): ?>
+  <video class="vbg" id="hero-video" muted playsinline preload="auto" disablepictureinpicture aria-hidden="true" tabindex="-1"<?php if (is_file(__DIR__ . '/assets/video/hero-end.jpg')): ?> poster="<?= st_asset('assets/video/hero-end.jpg') ?>"<?php endif; ?>>
+    <source src="<?= st_asset('assets/video/hero.mp4') ?>" type="video/mp4">
+  </video>
+  <div class="vshade" style="--vdark:<?= number_format($heroDark, 2, '.', '') ?>"></div>
+<?php else: ?>
   <div class="grid-lines"></div>
+<?php endif; ?>
   <div class="wrap hero-inner reveal">
     <span class="pill"><span class="live"></span><span data-en="<?= st_attr('index.secure-knowledge-base-https', 'en') ?>" data-da="<?= st_attr('index.secure-knowledge-base-https', 'da') ?>"><?= st_html('index.secure-knowledge-base-https', 'en') ?></span></span>
     <h1 class="title" data-en="<?= st_attr('index.the-living-knowledge-base-for-ai', 'en') ?>" data-da="<?= st_attr('index.the-living-knowledge-base-for-ai', 'da') ?>"><?= st_html('index.the-living-knowledge-base-for-ai', 'en') ?></h1>

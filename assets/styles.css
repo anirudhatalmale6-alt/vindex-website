@@ -238,3 +238,24 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--sur
   .brand{font-size:17px;letter-spacing:.1em;gap:8px}
   .toggle button{padding:6px 9px}
 }
+
+/* VIDEO HERO — the landing-page video behind the headline. It plays once and
+   stays on its last frame. --vdark (0–0.9) comes from "Website text", so the
+   darkening can be tuned without touching this file. */
+.hero.vhero{min-height:calc(100vh - 72px);min-height:calc(100svh - 72px);display:flex;align-items:center;padding:80px 0;isolation:isolate;background:#05090f}
+.hero.vhero::before{display:none}
+.vhero .vbg{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.vhero .vshade{position:absolute;inset:0;z-index:-1;--vdark:.7;background:
+  linear-gradient(0deg,rgba(5,9,15,.85) 0%,rgba(5,9,15,0) 24%),
+  linear-gradient(90deg,rgba(5,9,18,calc(var(--vdark) + .18)) 0%,rgba(5,9,18,var(--vdark)) 38%,rgba(5,9,18,calc(var(--vdark) * .43)) 70%,rgba(5,9,18,calc(var(--vdark) * .21)) 100%)}
+.vhero h1.title,.vhero .hero-meta .n{color:#fff}
+.vhero .lede,.vhero .hero-meta .l{color:rgba(235,241,250,.86)}
+.vhero .pill{background:rgba(10,16,28,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#dfe7f2;border-color:rgba(255,255,255,.18)}
+.vhero .btn-ghost{color:#fff;border-color:rgba(255,255,255,.35);background:rgba(10,16,28,.35)}
+.vhero .btn-ghost:hover{color:var(--accent);border-color:var(--accent)}
+@media(max-width:900px){
+  /* the text spans the whole width on phones, so darken evenly */
+  .vhero .vshade{background:
+    linear-gradient(0deg,rgba(5,9,15,.85) 0%,rgba(5,9,15,0) 24%),
+    rgba(5,9,18,calc(var(--vdark) * .85 + .05))}
+}

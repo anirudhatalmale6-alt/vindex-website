@@ -58,6 +58,25 @@
     })(btns[b]);}
   }
 
+  /* VIDEO HERO: plays once, then rests on its last frame (the sunset).
+     Anyone with "reduce motion" switched on, and any phone that refuses to
+     autoplay, gets that last frame straight away instead. Without JavaScript
+     the poster (the same last frame) shows. */
+  var hv=document.getElementById('hero-video');
+  if(hv){
+    var toEnd=function(){
+      var go=function(){ try{ if(hv.duration) hv.currentTime=Math.max(0,hv.duration-0.05); }catch(e){} };
+      if(hv.readyState>=1) go(); else hv.addEventListener('loadedmetadata',go);
+    };
+    var still=false;
+    try{ still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+    if(still){ toEnd(); }
+    else {
+      var pr; try{ pr=hv.play(); }catch(e){ toEnd(); }
+      if(pr&&pr.catch) pr.catch(function(){ toEnd(); });
+    }
+  }
+
   /* MOBILE MENU */
   var burger=document.getElementById('burger'), mm=document.getElementById('mobile-menu');
   if(burger&&mm) burger.onclick=function(){ mm.classList.toggle('open'); };

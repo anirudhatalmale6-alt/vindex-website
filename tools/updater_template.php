@@ -21,6 +21,9 @@ const UPD_VERSION  = '%%VERSION%%';
 const MAX_AGE_DAYS = 3;
 const STRAY_DIRS   = ['vindex-upload', 'vindex-upload-v2', 'vindex-upload-v3'];
 const OLD_HTML     = ['index.html', 'about.html', 'cases.html', 'platform.html', 'contact.html'];
+// The landing-page video is the client's to swap in File Manager. Once a copy
+// is on the server, an update must never put the old one back over theirs.
+const KEEP_IF_PRESENT = 'assets/video/';
 
 $FILES = [
 %%PAYLOAD%%
@@ -71,7 +74,8 @@ foreach ($FILES as $path => $b64) {
     if ($path === 'members/install.php' && $installed) continue;   // already installed: not needed, not wanted
     $data = base64_decode($b64, true);
     $target = $ROOT . '/' . $path;
-    $state = !is_file($target) ? 'new' : (sha1_file($target) === sha1($data) ? 'same' : 'update');
+    $state = !is_file($target) ? 'new' : (sha1_file($target) === sha1($data) ? 'same'
+           : (str_starts_with($path, KEEP_IF_PRESENT) ? 'yours' : 'update'));
     $plan[$path] = ['data' => $data, 'state' => $state];
 }
 
@@ -105,7 +109,7 @@ if ($stop === '' && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     } else {
         $done = ['written' => 0, 'same' => 0, 'failed' => [], 'removed' => [], 'kept' => []];
         foreach ($plan as $path => $f) {
-            if ($f['state'] === 'same') { $done['same']++; continue; }
+            if ($f['state'] === 'same' || $f['state'] === 'yours') { $done['same']++; continue; }
             $target = $ROOT . '/' . $path;
             $dir = dirname($target);
             if (!is_dir($dir) && !@mkdir($dir, 0755, true)) { $done['failed'][] = $path; continue; }
@@ -181,8 +185,9 @@ details summary{cursor:pointer;color:var(--muted)}
 
   <div class="card"><h2>Files</h2>
     <p><?= (int)($counts['new'] ?? 0) ?> new · <?= (int)($counts['update'] ?? 0) ?> updated · <?= (int)($counts['same'] ?? 0) ?> already up to date</p>
+    <?php if (!empty($counts['yours'])): ?><p class="ok">✓ Your own landing-page video is kept as it is.</p><?php endif; ?>
     <details><summary>Show the list</summary><ul>
-      <?php foreach ($plan as $p => $f): if ($f['state'] === 'same') continue; ?>
+      <?php foreach ($plan as $p => $f): if ($f['state'] === 'same' || $f['state'] === 'yours') continue; ?>
         <li><code><?= h($p) ?></code><span class="pill"><?= h($f['state']) ?></span></li>
       <?php endforeach; ?></ul></details>
   </div>
