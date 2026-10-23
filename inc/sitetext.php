@@ -119,6 +119,12 @@ function st_number(string $key, int $min, int $max): int {
     return max($min, min($max, $n));
 }
 
+/** A number setting kept inside the min/max its default declares. */
+function st_setting(string $key): int {
+    $d = st_defaults()[$key];
+    return st_number($key, (int)($d['min'] ?? 0), (int)($d['max'] ?? 100));
+}
+
 /** Is a link target safe to put in href? No javascript:, data:, etc. */
 function st_safe_url(string $url): bool {
     if ($url === '' || $url[0] === '#' || $url[0] === '/') return true;
@@ -166,7 +172,7 @@ function st_save(PDO $pdo, string $key, string $en, string $da, ?int $userId): s
     $single = st_single_language($d[$key]['kind']);
     if ($single) $da = '';
     if ($d[$key]['kind'] === 'setting') {                 // numbers only; anything else means "original"
-        $en = preg_match('/^\d{1,3}$/', $en) ? (string)max(0, min((int)($d[$key]['max'] ?? 100), (int)$en)) : '';
+        $en = preg_match('/^\d{1,3}$/', $en) ? (string)max((int)($d[$key]['min'] ?? 0), min((int)($d[$key]['max'] ?? 100), (int)$en)) : '';
     }
     if ($d[$key]['kind'] === 'font' && !isset(st_font_choices()[$en])) $en = '';   // only fonts that are on the server
     if ($en === '') $en = $d[$key]['en'];                 // an emptied box means "back to original"

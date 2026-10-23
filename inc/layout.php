@@ -44,6 +44,20 @@ function vdx_font_css(): string {
          . "--head-weight:$hw;--body-strong:$bw}";
 }
 
+/**
+ * Text sizes chosen in "Website text" for this page, as CSS variables (plain
+ * numbers, always inside the min/max the setting declares). The stylesheet
+ * turns them into sizes that shrink on narrow screens.
+ */
+function vdx_size_css(string $page): string {
+    $map = ['_size_hero_title' => '--sz-ht', '_size_hero_text' => '--sz-hb', '_size_text_title' => '--sz-tt', '_size_text_body' => '--sz-tb'];
+    $out = '';
+    foreach ($map as $suffix => $var) {
+        if (isset(st_defaults()[$page . '.' . $suffix])) $out .= $var . ':' . st_setting($page . '.' . $suffix) . ';';
+    }
+    return $out !== '' ? ':root{' . $out . '}' : '';
+}
+
 function vdx_head(string $page): void {
     st_page($page);
     $GLOBALS['__vdx_page'] = $page; ?>
@@ -56,7 +70,7 @@ function vdx_head(string $page): void {
 <meta name="description" content="<?= st_plain($page . '._meta') ?>">
 <link rel="stylesheet" href="<?= st_asset('assets/fonts/fonts.css') ?>">
 <link rel="stylesheet" href="<?= st_asset('assets/styles.css') ?>">
-<style><?= vdx_font_css() ?></style>
+<style><?= vdx_font_css() ?><?= vdx_size_css($page) ?></style>
 <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('vindex-theme')||'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
 </head>
 <body>

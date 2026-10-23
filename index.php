@@ -26,23 +26,17 @@ vdx_hero_open('index', 'hero');
 
 <section class="blk value-sec">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="value-text reveal">
       <div class="accent-rule"></div>
       <?= el('h2', 'index.value-title') ?>
 
       <?= el('p', 'index.value-intro') ?>
 
-    </div>
-    <div class="grid-2 value-grid">
+      <ul class="value-list">
 <?php for ($i = 1; $i <= 4; $i++): ?>
-      <div class="card reveal">
-        <span class="vnum">0<?= $i ?></span>
-        <?= el('h3', "index.value-$i-title") ?>
-
-        <?= el('p', "index.value-$i-text") ?>
-
-      </div>
+        <li><?= el('b', "index.value-$i-title") ?>: <?= el('span', "index.value-$i-text") ?></li>
 <?php endfor; ?>
+      </ul>
     </div>
   </div>
 </section>

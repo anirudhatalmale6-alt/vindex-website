@@ -269,8 +269,34 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--sur
 .vnum{display:inline-block;font-family:var(--font-head);font-size:13px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
 
 /* ABOUT — video hero with a longer headline, then the story */
-.hero-about h1.title{font-size:clamp(34px,4.8vw,58px);max-width:900px}
+.hero-about h1.title{max-width:900px}
 .about-story .story{max-width:760px}
 .about-story .story p{font-size:19px;line-height:1.75;color:var(--ink);margin:0 0 22px}
 .about-story .story p:last-child{margin-bottom:0}
 .hero.vhero > .wrap{width:100%}   /* the hero is a flex row; let the text line up with the sections below */
+
+/* TEXT SIZES — the numbers come from "Website text" (px on a laptop screen).
+   Headings shrink with the screen width down to ~55-70% on phones. */
+.vhero h1.title{font-size:clamp(calc(var(--sz-ht,70) * .55px), calc(var(--sz-ht,70) * .078vw), calc(var(--sz-ht,70) * 1px))}
+.vhero .lede{font-size:calc(var(--sz-hb,19) * 1px)}
+
+/* LANDING — one flowing text below the video (no boxes) */
+.value-text{max-width:860px}
+.value-text h2{font-size:clamp(calc(var(--sz-tt,40) * .7px), calc(var(--sz-tt,40) * .078vw), calc(var(--sz-tt,40) * 1px));margin-bottom:18px}
+.value-text p,.value-list li{font-size:calc(var(--sz-tb,18) * 1px);line-height:1.7;color:var(--muted)}
+.value-list{list-style:none;margin:24px 0 0;padding:0}
+.value-list li{position:relative;padding-left:24px;margin-bottom:16px}
+.value-list li:last-child{margin-bottom:0}
+.value-list li::before{content:"";position:absolute;left:0;top:.68em;width:8px;height:8px;border-radius:2px;background:var(--accent)}
+.value-list li b{color:var(--ink-2);font-weight:var(--body-strong,600)}
+
+/* ABOUT — the whole story over the video */
+.hero.vhero.hero-about{padding:110px 0 90px}
+.about-inner{max-width:860px}
+.about-inner .lede{max-width:780px;margin-bottom:18px}
+.about-inner .lede:last-child{margin-bottom:0}
+
+@media(max-width:600px){
+  .vhero .lede{font-size:min(calc(var(--sz-hb,19) * 1px),18px)}
+  .value-text p,.value-list li{font-size:min(calc(var(--sz-tb,18) * 1px),18px)}
+}
