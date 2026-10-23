@@ -16,11 +16,6 @@ vdx_hero_open('index', 'hero');
       <?= el('a', 'index.explore-the-platform', 'class="btn btn-ghost" href="about.php"') ?>
 
     </div>
-    <div class="hero-meta">
-      <div><div class="n">17</div><?= el('div', 'index.knowledge-modules', 'class="l"') ?></div>
-      <div><div class="n">2</div><?= el('div', 'index.access-tiers', 'class="l"') ?></div>
-      <div><div class="n">Live</div><?= el('div', 'index.always-up-to-date', 'class="l"') ?></div>
-    </div>
   </div></div>
 </section>
 
