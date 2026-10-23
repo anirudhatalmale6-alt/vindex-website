@@ -5,7 +5,7 @@ require __DIR__ . '/inc/layout.php';
 vdx_head('index');
 vdx_hero_open('index', 'hero');
 ?>
-  <div class="wrap hero-inner reveal">
+  <div class="wrap"><div class="hero-inner reveal">
     <?= el('h1', 'index.hero-title', 'class="title"') ?>
 
     <?= el('p', 'index.hero-lede', 'class="lede"') ?>
@@ -21,7 +21,7 @@ vdx_hero_open('index', 'hero');
       <div><div class="n">2</div><?= el('div', 'index.access-tiers', 'class="l"') ?></div>
       <div><div class="n">Live</div><?= el('div', 'index.always-up-to-date', 'class="l"') ?></div>
     </div>
-  </div>
+  </div></div>
 </section>
 
 <section class="blk value-sec">

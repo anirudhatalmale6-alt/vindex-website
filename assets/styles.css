@@ -273,3 +273,4 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--sur
 .about-story .story{max-width:760px}
 .about-story .story p{font-size:19px;line-height:1.75;color:var(--ink);margin:0 0 22px}
 .about-story .story p:last-child{margin-bottom:0}
+.hero.vhero > .wrap{width:100%}   /* the hero is a flex row; let the text line up with the sections below */

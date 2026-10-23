@@ -4,12 +4,12 @@ require __DIR__ . '/inc/layout.php';
 vdx_head('about');
 vdx_hero_open('about', 'about', 'hero-about');
 ?>
-  <div class="wrap hero-inner reveal">
+  <div class="wrap"><div class="hero-inner reveal">
     <?= el('h1', 'about.hero-title', 'class="title"') ?>
 
     <?= el('p', 'about.hero-lede', 'class="lede"') ?>
 
-  </div>
+  </div></div>
 </section>
 
 <section class="blk about-story">
