@@ -102,7 +102,10 @@ function st_value(string $key, string $lang = 'en'): string {
 }
 
 /** Page titles, Google descriptions and settings have one value, not EN + DA. */
-function st_single_language(string $kind): bool { return $kind === 'seo' || $kind === 'setting'; }
+function st_single_language(string $kind): bool { return $kind === 'seo' || $kind === 'setting' || $kind === 'font'; }
+
+/** The fonts a 'font' setting may pick from: slug => [family, weights]. */
+function st_font_choices(): array { static $f = null; if ($f === null) $f = require __DIR__ . '/fonts.php'; return $f; }
 
 /**
  * A whole-number setting, kept inside [$min, $max]. Anything that is not a
@@ -165,6 +168,7 @@ function st_save(PDO $pdo, string $key, string $en, string $da, ?int $userId): s
     if ($d[$key]['kind'] === 'setting') {                 // numbers only; anything else means "original"
         $en = preg_match('/^\d{1,3}$/', $en) ? (string)max(0, min((int)($d[$key]['max'] ?? 100), (int)$en)) : '';
     }
+    if ($d[$key]['kind'] === 'font' && !isset(st_font_choices()[$en])) $en = '';   // only fonts that are on the server
     if ($en === '') $en = $d[$key]['en'];                 // an emptied box means "back to original"
     if (!$single && $da === '') $da = $d[$key]['da'];
     if ($en === $d[$key]['en'] && $da === $d[$key]['da']) {
@@ -196,6 +200,5 @@ function st_admin_fields(PDO $pdo, string $page): array {
 }
 
 function st_pages(): array {
-    return ['index' => 'Landing page', 'about' => 'About', 'cases' => 'Cases',
-            'platform' => 'Platform', 'contact' => 'Contact', 'shared' => 'Menu & footer'];
+    return ['index' => 'Landing page', 'about' => 'About', 'contact' => 'Contact', 'shared' => 'Fonts, menu & footer'];
 }

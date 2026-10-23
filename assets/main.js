@@ -26,8 +26,8 @@
   };
 
   /* LANGUAGE (persisted across pages) */
-  var lang='en';
-  try{ lang=localStorage.getItem('vindex-lang')||'en'; }catch(e){}
+  var lang='da';   // Danish first; English is the second language
+  try{ lang=localStorage.getItem('vindex-lang')||'da'; }catch(e){}
   function applyLang(l){
     var nodes=document.querySelectorAll('[data-en]');
     for(var i=0;i<nodes.length;i++){
