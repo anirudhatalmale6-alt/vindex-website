@@ -5,7 +5,10 @@ vdx_head('contact');
 ?>
 <section class="page-hero">
   <div class="wrap reveal">
-    <div class="breadcrumb"><a href="index.php" data-en="<?= st_attr('contact.home', 'en') ?>" data-da="<?= st_attr('contact.home', 'da') ?>"><?= st_html('contact.home', VDX_LANG) ?></a> / <span data-en="<?= st_attr('contact.contact', 'en') ?>" data-da="<?= st_attr('contact.contact', 'da') ?>"><?= st_html('contact.contact', VDX_LANG) ?></span></div>
+<?php $bc1 = el('a', 'contact.home', 'href="index.php"'); $bc2 = el('span', 'contact.contact');
+      if ($bc1 !== '' || $bc2 !== ''): ?>
+    <div class="breadcrumb"><?= $bc1 ?><?= $bc1 !== '' && $bc2 !== '' ? '<span class="sep"> / </span>' : '' ?><?= $bc2 ?></div>
+<?php endif; ?>
     <span class="eyebrow" data-en="<?= st_attr('contact.contact-2', 'en') ?>" data-da="<?= st_attr('contact.contact-2', 'da') ?>"><?= st_html('contact.contact-2', VDX_LANG) ?></span>
     <div class="accent-rule"></div>
   </div>

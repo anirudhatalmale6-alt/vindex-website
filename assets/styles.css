@@ -309,3 +309,5 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--sur
    title comes from here, so it disappears together with the title. */
 [data-en]:empty{display:none}
 .value-list li b:not(:empty)::after{content:":"}
+/* breadcrumb: the "/" only shows between two parts that both have text */
+.breadcrumb > :empty + .sep,.breadcrumb .sep:has(+ :empty){display:none}
