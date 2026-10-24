@@ -29,7 +29,8 @@ vdx_hero_open('index', 'hero');
 
       <ul class="value-list">
 <?php for ($i = 1; $i <= 4; $i++): ?>
-        <li><?= el('b', "index.value-$i-title") ?>: <?= el('span', "index.value-$i-text") ?></li>
+<?php   $li = el('b', "index.value-$i-title") . ' ' . el('span', "index.value-$i-text"); if (trim($li) === '') continue; ?>
+        <li><?= $li ?></li>
 <?php endfor; ?>
       </ul>
     </div>

@@ -303,3 +303,9 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--sur
 
 /* CONTACT — just the form, one column */
 .contact-solo .form{max-width:760px}   /* lines up with the 'Kontakt' label above */
+
+/* Text emptied in Website text for ONE language is hidden in that language
+   (the language switch empties the element). The colon after a bold point
+   title comes from here, so it disappears together with the title. */
+[data-en]:empty{display:none}
+.value-list li b:not(:empty)::after{content:":"}

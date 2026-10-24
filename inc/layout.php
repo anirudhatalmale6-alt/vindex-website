@@ -13,6 +13,8 @@ const VDX_LANG = 'da';   // the language a page is rendered in; the toggle offer
 
 /** <tag attrs data-en=".." data-da="..">Danish text</tag> for one text key. */
 function el(string $tag, string $key, string $attrs = ''): string {
+    // Emptied in both languages = left out of the page entirely.
+    if (st_value($key, 'en') === '' && st_value($key, 'da') === '') return '';
     return '<' . $tag . ($attrs !== '' ? ' ' . $attrs : '')
          . ' data-en="' . st_attr($key, 'en') . '" data-da="' . st_attr($key, 'da') . '">'
          . st_html($key, VDX_LANG) . '</' . $tag . '>';

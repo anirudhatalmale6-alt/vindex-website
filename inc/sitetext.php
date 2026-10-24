@@ -5,7 +5,8 @@
  * Every page asks for its wording by key. The answer is whatever was saved in
  * the members admin under "Website text", or — if nothing was — the original
  * wording in sitetext-defaults.php. So the site is complete with an empty
- * table, and "Reset" in the admin simply deletes the saved edit.
+ * table, and "Reset" in the admin simply deletes the saved edit. A text saved
+ * as empty is hidden on the page (the element is left out).
  *
  * Text is written in a small, safe markup rather than HTML:
  *     **bold**      ==cyan highlight==      [link text](https://…)
@@ -97,7 +98,11 @@ function st_value(string $key, string $lang = 'en'): string {
     if (st_single_language($d[$key]['kind'])) $lang = 'en';   // titles, descriptions and settings have one value
     $lang = $lang === 'da' ? 'da' : 'en';
     $o = st_overrides($GLOBALS['__st_page'] ?? null)[$key] ?? null;
-    if ($o !== null && $o[$lang] !== '') return $o[$lang];
+    if ($o !== null) {
+        // A saved edit wins, even when it is empty: for text, an emptied box
+        // means "hide this on the page". Settings never store an empty value.
+        if ($o[$lang] !== '' || !st_single_language($d[$key]['kind'])) return $o[$lang];
+    }
     return $d[$key][$lang] !== '' ? $d[$key][$lang] : $d[$key]['en'];
 }
 
@@ -175,8 +180,9 @@ function st_save(PDO $pdo, string $key, string $en, string $da, ?int $userId): s
         $en = preg_match('/^\d{1,3}$/', $en) ? (string)max((int)($d[$key]['min'] ?? 0), min((int)($d[$key]['max'] ?? 100), (int)$en)) : '';
     }
     if ($d[$key]['kind'] === 'font' && !isset(st_font_choices()[$en])) $en = '';   // only fonts that are on the server
-    if ($en === '') $en = $d[$key]['en'];                 // an emptied box means "back to original"
-    if (!$single && $da === '') $da = $d[$key]['da'];
+    // Titles, Google descriptions, numbers and fonts can't be blank: an emptied
+    // box puts the original back. Ordinary text CAN be blank — that hides it.
+    if ($single && $en === '') $en = $d[$key]['en'];
     if ($en === $d[$key]['en'] && $da === $d[$key]['da']) {
         $pdo->prepare('DELETE FROM site_text WHERE skey = ?')->execute([$key]);
         return 'original';
