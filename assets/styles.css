@@ -300,3 +300,6 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--sur
   .vhero .lede{font-size:min(calc(var(--sz-hb,19) * 1px),18px)}
   .value-text p,.value-list li{font-size:min(calc(var(--sz-tb,18) * 1px),18px)}
 }
+
+/* CONTACT — just the form, one column */
+.contact-solo{max-width:760px}
