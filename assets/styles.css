@@ -302,4 +302,4 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--sur
 }
 
 /* CONTACT — just the form, one column */
-.contact-solo{max-width:760px}
+.contact-solo .form{max-width:760px}   /* lines up with the 'Kontakt' label above */
